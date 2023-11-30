@@ -12,12 +12,12 @@ Projeto para integrar a documentação de negócio atrelada ao código com o Con
 
 ## Como utilizar
 #### Adicionar um stage para o phpConfluence na pipeline
-Exemplo:
+Exemplo GITLAB:
 ```
 phpConfluence:
   stage: phpConfluence
   image:
-    name: ghcr.io/parisprobr/phpConfluence:latest
+    name: parisprobr/phpdoc:latest
   script:
     - mkdir -p /data/
     - cp -r $CI_PROJECT_DIR/* /data/
@@ -29,6 +29,41 @@ phpConfluence:
     - merge_requests
     - master
     - develop
+```
+
+Exemplo GITHUB:
+```
+name: PHP Confluence Workflow
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  phpConfluence:
+    runs-on: ubuntu-latest
+    container: 
+      image: parisprobr/phpdoc:latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup
+      run: |
+        mkdir -p /data/
+        cp -r ${{ github.workspace }}/* /data/
+
+    - name: Execute Script
+      run: |
+        cd /app/src
+        php ExecutePipeline.php ${{ github.actor }} ${{ secrets.CONFLUENCE_USER }} ${{ secrets.CONFLUENCE_PASS }} ${{ github.event.repository.html_url }} ${{ github.run_id }}
+        # ou 
+        # php ExecutePipeline.php ${{ github.actor }} ${{ secrets.CONFLUENCE_USER }} ${{ secrets.CONFLUENCE_PASS }} ${{ github.event.pull_request.html_url }} ${{ github.event.pull_request.number }}
 ```
 #### No código:
 Exemplo:
