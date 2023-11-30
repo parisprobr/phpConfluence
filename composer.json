@@ -1,0 +1,20 @@
+{
+  "name": "parisprobr/phpconfluence",
+  "type": "project",
+  "description": "POC para documentação de código",
+  "require": {
+    "php": "~8.1",
+    "guzzlehttp/guzzle": "^7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Parisprobr\\PhpConfluence\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Rodrigo Paris",
+      "email": "parisprobr@gmail.com"
+    }
+  ]
+}
